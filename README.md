@@ -1,17 +1,11 @@
-# Gerenciador de Tarefas — CodeIgniter 4
-
-Sistema CRUD completo de gerenciamento de tarefas construído com **CodeIgniter 4.7** e **Tailwind CSS**, incluindo proteção CSRF, validação no Model e uma **API REST** em JSON.
-
----
-
 ## Funcionalidades
 
-- ✅ CRUD completo (Criar, Listar, Editar, Excluir) com rotas amigáveis
-- ✅ Validação de dados nativa do CodeIgniter no Model
-- ✅ Proteção CSRF habilitada globalmente
-- ✅ Proteção contra SQL Injection (Query Builder / Active Record do CI4)
-- ✅ Quadro Kanban responsivo (Tailwind CSS) com drag & drop entre status
-- ✅ API REST (`/api/tarefas`) retornando JSON
+- CRUD completo (Criar, Listar, Editar, Excluir) com rotas amigáveis
+- Validação de dados nativa do CodeIgniter no Model
+- Proteção CSRF habilitada globalmente
+- Proteção contra SQL Injection (Query Builder / Active Record do CI4)
+- Quadro Kanban responsivo (Tailwind CSS) com drag & drop entre status
+- API REST (`/api/tarefas`) retornando JSON
 
 ---
 
