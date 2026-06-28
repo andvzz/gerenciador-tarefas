@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Identidade visual Madalozzo Seguros — azul corporativo + branco
+   ============================================================ */
+
+@layer base {
+    :root {
+        --brand: #0000FF;
+        --navy: #0B2A4A;
+        --glass-border: rgba(0, 0, 255, 0.12);
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #EFF5FC;
+        color: var(--navy);
+        -webkit-font-smoothing: antialiased;
+    }
+}
+
+@layer components {
+    /* Glassmorphism premium (azul + branco) */
+    .glass {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.65) 100%);
+        backdrop-filter: blur(28px) saturate(160%);
+        -webkit-backdrop-filter: blur(28px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 24px 50px -18px rgba(11, 42, 74, 0.25),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    /* Mesh gradient orbs (tons azuis) — aspecto premium */
+    .mesh-bg {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        overflow: hidden;
+        pointer-events: none;
+    }
+    .mesh-bg::before,
+    .mesh-bg::after {
+        content: "";
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(120px);
+    }
+    .mesh-bg::before {
+        top: -12%;
+        left: -10%;
+        width: 55%;
+        height: 55%;
+        background: rgba(0, 0, 255, 0.18);
+    }
+    .mesh-bg::after {
+        bottom: -15%;
+        right: -10%;
+        width: 50%;
+        height: 50%;
+        background: rgba(126, 174, 231, 0.22);
+    }
+
+    /* Textura de grão para sensação premium */
+    .noise-bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.03;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+}
+
+/* Scrollbar estilizada (azul) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 255, 0.3); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 255, 0.5); }

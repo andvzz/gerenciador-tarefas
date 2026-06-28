@@ -1,0 +1,13 @@
+{
+    "name": "gerenciador-tarefas-frontend",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Pipeline de build do Tailwind CSS para o Gerenciador de Tarefas (CodeIgniter 4)",
+    "scripts": {
+        "build:css": "tailwindcss -i ./resources/css/input.css -o ./public/assets/css/app.css --minify",
+        "watch:css": "tailwindcss -i ./resources/css/input.css -o ./public/assets/css/app.css --watch"
+    },
+    "devDependencies": {
+        "tailwindcss": "^3.4.17"
+    }
+}
