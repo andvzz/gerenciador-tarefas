@@ -149,7 +149,7 @@ Caso a pasta `vendor/` seja removida e você tenha o Composer instalado:
 composer install
 ```
 
-## O que reaprendi em PHP
+## O que reaprendi com o teste
 
 1. Revisão de API REST: 
     - Utilizada para o envio dos pacotes JSON para o banco de dados, fazendo com que o backend e o frontend se comuniquem apenas com os dados necessários e não carrega desnecessariamente um html inteiro.
