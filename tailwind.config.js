@@ -23,7 +23,7 @@ module.exports = {
                 ink: '#0B2A4A',
             },
             fontFamily: {
-                sans: ['Inter', 'sans-serif'],
+                sans: ['Inter'],
             },
         },
     },

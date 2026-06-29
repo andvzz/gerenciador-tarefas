@@ -211,7 +211,7 @@ foreach ($tarefas as $tarefa) {
                                 <button type="button" class="kb-action edit" title="Editar">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                 </button>
-                                <a class="kb-action del" href="<?= site_url('tarefas/excluir/' . $tarefa['id']) ?>" title="Excluir" onclick="return confirm('Deseja realmente excluir esta tarefa?');">
+                                <a class="kb-action del" href="<?= site_url('tasks/delete/' . $tarefa['id']) ?>" title="Excluir" onclick="return confirm('Deseja realmente excluir esta tarefa?');">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                 </a>
                             </div>
@@ -234,105 +234,25 @@ foreach ($tarefas as $tarefa) {
     <?php endforeach; ?>
 </div>
 
-<div id="task-modal" class="kb-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
-    <div class="kb-modal-overlay" data-modal-close></div>
-
-    <div class="kb-modal-panel">
-        <button type="button" class="kb-modal-close" data-modal-close title="Fechar">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-
-        <div class="kb-modal-body">
-        <div class="space-y-1 mb-7 pr-10">
-            <h2 id="task-modal-title" class="text-2xl md:text-3xl font-black tracking-tighter uppercase text-ink">
-                Nova <span class="text-brand-600">Tarefa</span>
-            </h2>
-            <p id="task-modal-subtitle" class="text-sm font-medium text-brand-900/50">Crie uma nova atividade para o projeto.</p>
-        </div>
-
-        <div id="task-form-errors" class="mb-6 rounded-2xl border border-red-200 bg-red-50/80 px-5 py-4 hidden">
-            <p class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-red-600 mb-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                Corrija os erros abaixo
-            </p>
-            <ul class="list-disc list-inside space-y-1 text-sm font-medium text-red-700"></ul>
-        </div>
-
-        <form id="task-form" class="flex flex-col gap-6" data-mode="create" data-id="">
-            <?= csrf_field() ?>
-
-            <div class="flex flex-col gap-2">
-                <label for="task-title" class="text-[11px] font-black uppercase tracking-[0.15em] text-brand-900/60 px-1">Título</label>
-                <input type="text" id="task-title" name="title" required
-                       placeholder="Ex: Revisar proposta do cliente"
-                       class="w-full rounded-xl border border-brand-600/15 bg-white/70 px-4 py-3 text-sm font-medium text-ink placeholder:text-brand-900/30 outline-none transition-all focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">
-            </div>
-
-            <div class="flex flex-col gap-2">
-                <label for="task-description" class="text-[11px] font-black uppercase tracking-[0.15em] text-brand-900/60 px-1">Descrição <span class="text-brand-900/30 normal-case tracking-normal font-semibold">(opcional)</span></label>
-                <textarea id="task-description" name="description" rows="4"
-                          placeholder="Adicione detalhes, links ou instruções..."
-                          class="w-full rounded-xl border border-brand-600/15 bg-white/70 px-4 py-3 text-sm font-medium text-ink placeholder:text-brand-900/30 outline-none transition-all resize-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"></textarea>
-            </div>
-
-            <div class="flex flex-col gap-2">
-                <span id="task-status-label" class="text-[11px] font-black uppercase tracking-[0.15em] text-brand-900/60 px-1">Status</span>
-
-                <?php
-                $coresStatus = [
-                    'pendente'     => '#7EAEE7',
-                    'em andamento' => '#0000FF',
-                    'concluída'    => '#22C55E',
-                ];
-                ?>
-
-                <input type="hidden" id="task-status" name="status" value="pendente">
-
-                <div id="task-status-select" class="kb-select" data-open="false">
-                    <button type="button" id="task-status-trigger" class="kb-select-trigger"
-                            aria-haspopup="listbox" aria-expanded="false" aria-labelledby="task-status-label">
-                        <span id="task-status-dot" class="kb-select-dot" style="background: <?= $coresStatus['pendente'] ?>;"></span>
-                        <span id="task-status-value" class="kb-select-value">Pendente</span>
-                        <svg class="kb-select-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                    </button>
-
-                    <ul id="task-status-list" class="kb-select-list" role="listbox" aria-labelledby="task-status-label">
-                        <?php foreach ($coresStatus as $valor => $cor): ?>
-                            <li class="kb-select-option" role="option" data-value="<?= esc($valor, 'attr') ?>"
-                                aria-selected="<?= $valor === 'pendente' ? 'true' : 'false' ?>">
-                                <span class="kb-select-dot" style="background: <?= $cor ?>;"></span>
-                                <span><?= ucfirst($valor) ?></span>
-                                <svg class="kb-select-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="flex gap-3 pt-2">
-                <button type="button" data-modal-close
-                        class="flex-1 text-center py-3 px-4 rounded-xl border border-brand-600/15 text-sm font-bold text-brand-900/70 hover:bg-brand-50 transition-colors">
-                    Cancelar
-                </button>
-                <button type="submit" id="task-form-submit"
-                        class="flex-[2] inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-brand-600 text-white text-sm font-black uppercase tracking-widest shadow-lg shadow-brand-600/30 hover:bg-brand-700 hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span id="task-form-submit-label">Salvar Tarefa</span>
-                </button>
-            </div>
-        </form>
-        </div>
-    </div>
-</div>
+<?= $this->include('tasks/create') ?>
+<?= $this->include('tasks/edit') ?>
 
 <div id="kb-toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
 <script>
-    const CSRF_NAME = '<?= csrf_token() ?>';
-    let   CSRF_HASH = '<?= csrf_hash() ?>';
-    const UPDATE_URL = '<?= site_url('tarefas/atualizar-status') ?>';
+    const CSRF_NAME  = '<?= csrf_token() ?>';
+    let   CSRF_HASH  = '<?= csrf_hash() ?>';
+    const UPDATE_URL = '<?= site_url('tasks/update-status') ?>';
+    const STORE_URL  = '<?= site_url('tasks/store') ?>';
+    const UPDATE_BASE = '<?= site_url('tasks/update') ?>';
+    const DELETE_BASE = '<?= site_url('tasks/delete') ?>';
 
+    const SVG_EDIT = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+    const SVG_DEL  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+    const SVG_CAL  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+
+    /* ---------------- Toast ---------------- */
     const toastEl = document.getElementById('kb-toast');
     let toastTimer;
     function showToast(msg, isError = false) {
@@ -343,6 +263,7 @@ foreach ($tarefas as $tarefa) {
         toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
     }
 
+    /* ---------------- Colunas / cards ---------------- */
     function refreshColumns() {
         document.querySelectorAll('.kb-col').forEach(col => {
             const list  = col.querySelector('.kb-list');
@@ -353,6 +274,81 @@ foreach ($tarefas as $tarefa) {
         });
     }
 
+    function fmtDate(raw) {
+        if (!raw) return '';
+        const parts = String(raw).slice(0, 10).split('-');
+        return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : raw;
+    }
+
+    function buildCard(task) {
+        const card = document.createElement('div');
+        card.className = 'kb-card';
+        card.dataset.id          = task.id;
+        card.dataset.title       = task.title || '';
+        card.dataset.description = task.description || '';
+
+        const top = document.createElement('div');
+        top.className = 'kb-card-top';
+
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'kb-card-title';
+        titleSpan.textContent = task.title || '';
+
+        const actions = document.createElement('div');
+        actions.className = 'kb-actions';
+
+        const editBtn = document.createElement('button');
+        editBtn.type = 'button';
+        editBtn.className = 'kb-action edit';
+        editBtn.title = 'Editar';
+        editBtn.innerHTML = SVG_EDIT;
+
+        const delLink = document.createElement('a');
+        delLink.className = 'kb-action del';
+        delLink.href = `${DELETE_BASE}/${task.id}`;
+        delLink.title = 'Excluir';
+        delLink.setAttribute('onclick', "return confirm('Deseja realmente excluir esta tarefa?');");
+        delLink.innerHTML = SVG_DEL;
+
+        actions.append(editBtn, delLink);
+        top.append(titleSpan, actions);
+        card.append(top);
+
+        if (task.description) {
+            const desc = document.createElement('p');
+            desc.className = 'kb-card-desc';
+            desc.textContent = task.description;
+            card.append(desc);
+        }
+
+        const foot = document.createElement('div');
+        foot.className = 'kb-card-foot';
+        const date = document.createElement('span');
+        date.className = 'kb-date';
+        date.innerHTML = SVG_CAL;
+        date.append(document.createTextNode(' ' + fmtDate(task.created_at)));
+        foot.append(date);
+        card.append(foot);
+
+        return card;
+    }
+
+    function listFor(status) {
+        return document.querySelector(`.kb-list[data-status="${status}"]`);
+    }
+
+    function placeCard(task, removeId) {
+        if (removeId) {
+            const old = document.querySelector(`.kb-card[data-id="${removeId}"]`);
+            if (old) old.remove();
+        }
+        const list = listFor(task.status);
+        if (!list) return;
+        const card = buildCard(task);
+        list.insertBefore(card, list.querySelector('.kb-empty') || null);
+    }
+
+    /* ---------------- Drag & drop ---------------- */
     async function persistStatus(card, toList, fromList, oldIndex) {
         const body = new URLSearchParams();
         body.append('id', card.dataset.id);
@@ -399,250 +395,159 @@ foreach ($tarefas as $tarefa) {
 
     refreshColumns();
 
-    const STORE_URL   = '<?= site_url('tarefas/salvar') ?>';
-    const UPDATE_BASE = '<?= site_url('tarefas/atualizar') ?>';
-    const DELETE_BASE = '<?= site_url('tarefas/excluir') ?>';
+    /* ---------------- Status select (widget reutilizável) ---------------- */
+    function createStatusSelect(prefix) {
+        const wrap    = document.getElementById(`${prefix}-status-select`);
+        const trigger = document.getElementById(`${prefix}-status-trigger`);
+        const list    = document.getElementById(`${prefix}-status-list`);
+        const dot     = document.getElementById(`${prefix}-status-dot`);
+        const valueEl = document.getElementById(`${prefix}-status-value`);
+        const hidden  = document.getElementById(`${prefix}-status`);
+        const options = Array.from(list.querySelectorAll('.kb-select-option'));
 
-    const SVG_EDIT = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
-    const SVG_DEL  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
-    const SVG_CAL  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+        function setStatus(value) {
+            const opt = options.find(o => o.dataset.value === value) || options[0];
+            hidden.value = opt.dataset.value;
+            valueEl.textContent = opt.querySelector('span:nth-child(2)').textContent;
+            dot.style.background = opt.querySelector('.kb-select-dot').style.background;
+            options.forEach(o => o.setAttribute('aria-selected', o === opt ? 'true' : 'false'));
+        }
+        const open  = () => { wrap.dataset.open = 'true';  trigger.setAttribute('aria-expanded', 'true'); };
+        const close = () => { wrap.dataset.open = 'false'; trigger.setAttribute('aria-expanded', 'false'); };
+        const toggle = () => { wrap.dataset.open === 'true' ? close() : open(); };
 
-    const modal         = document.getElementById('task-modal');
-    const form          = document.getElementById('task-form');
-    const titleInput    = document.getElementById('task-title');
-    const descInput     = document.getElementById('task-description');
-    const statusSelect  = document.getElementById('task-status');
-    const modalTitle    = document.getElementById('task-modal-title');
-    const modalSubtitle = document.getElementById('task-modal-subtitle');
-    const submitBtn     = document.getElementById('task-form-submit');
-    const submitLabel   = document.getElementById('task-form-submit-label');
-    const errorsBox     = document.getElementById('task-form-errors');
-    const errorsList    = errorsBox.querySelector('ul');
-
-    const statusWrap    = document.getElementById('task-status-select');
-    const statusTrigger = document.getElementById('task-status-trigger');
-    const statusList    = document.getElementById('task-status-list');
-    const statusDot     = document.getElementById('task-status-dot');
-    const statusValueEl = document.getElementById('task-status-value');
-    const statusOptions = Array.from(statusList.querySelectorAll('.kb-select-option'));
-
-    function setStatus(value) {
-        const opt = statusOptions.find(o => o.dataset.value === value) || statusOptions[0];
-        statusSelect.value   = opt.dataset.value;
-        statusValueEl.textContent = opt.querySelector('span:nth-child(2)').textContent;
-        statusDot.style.background = opt.querySelector('.kb-select-dot').style.background;
-        statusOptions.forEach(o => o.setAttribute('aria-selected', o === opt ? 'true' : 'false'));
-    }
-
-    function openStatusDropdown() {
-        statusWrap.dataset.open = 'true';
-        statusTrigger.setAttribute('aria-expanded', 'true');
-    }
-    function closeStatusDropdown() {
-        statusWrap.dataset.open = 'false';
-        statusTrigger.setAttribute('aria-expanded', 'false');
-    }
-    function toggleStatusDropdown() {
-        statusWrap.dataset.open === 'true' ? closeStatusDropdown() : openStatusDropdown();
-    }
-
-    statusTrigger.addEventListener('click', (e) => { e.stopPropagation(); toggleStatusDropdown(); });
-
-    statusOptions.forEach(opt => {
-        opt.addEventListener('click', () => {
-            setStatus(opt.dataset.value);
-            closeStatusDropdown();
+        trigger.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
+        options.forEach(opt => opt.addEventListener('click', () => { setStatus(opt.dataset.value); close(); }));
+        document.addEventListener('click', (e) => {
+            if (wrap.dataset.open === 'true' && !wrap.contains(e.target)) close();
         });
-    });
 
-    document.addEventListener('click', (e) => {
-        if (statusWrap.dataset.open === 'true' && !statusWrap.contains(e.target)) {
-            closeStatusDropdown();
-        }
-    });
-
-    function fmtDate(raw) {
-        if (!raw) return '';
-        const parts = String(raw).slice(0, 10).split('-');
-        return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : raw;
+        return { setStatus, open, close, getValue: () => hidden.value, isOpen: () => wrap.dataset.open === 'true' };
     }
 
-    function buildCard(tarefa) {
-        const card = document.createElement('div');
-        card.className = 'kb-card';
-        card.dataset.id          = tarefa.id;
-        card.dataset.title       = tarefa.title || '';
-        card.dataset.description = tarefa.description || '';
+    /* ---------------- Modal (controlador reutilizável) ---------------- */
+    function createModalController(prefix) {
+        const modal      = document.getElementById(`${prefix}-modal`);
+        const form       = document.getElementById(`${prefix}-form`);
+        const titleInput = document.getElementById(`${prefix}-title`);
+        const descInput  = document.getElementById(`${prefix}-description`);
+        const submitBtn  = document.getElementById(`${prefix}-form-submit`);
+        const errorsBox  = document.getElementById(`${prefix}-form-errors`);
+        const errorsList = errorsBox.querySelector('ul');
+        const status     = createStatusSelect(prefix);
 
-        const top = document.createElement('div');
-        top.className = 'kb-card-top';
-
-        const titleSpan = document.createElement('span');
-        titleSpan.className = 'kb-card-title';
-        titleSpan.textContent = tarefa.title || '';
-
-        const actions = document.createElement('div');
-        actions.className = 'kb-actions';
-
-        const editBtn = document.createElement('button');
-        editBtn.type = 'button';
-        editBtn.className = 'kb-action edit';
-        editBtn.title = 'Editar';
-        editBtn.innerHTML = SVG_EDIT;
-
-        const delLink = document.createElement('a');
-        delLink.className = 'kb-action del';
-        delLink.href = `${DELETE_BASE}/${tarefa.id}`;
-        delLink.title = 'Excluir';
-        delLink.setAttribute('onclick', "return confirm('Deseja realmente excluir esta tarefa?');");
-        delLink.innerHTML = SVG_DEL;
-
-        actions.append(editBtn, delLink);
-        top.append(titleSpan, actions);
-        card.append(top);
-
-        if (tarefa.description) {
-            const desc = document.createElement('p');
-            desc.className = 'kb-card-desc';
-            desc.textContent = tarefa.description;
-            card.append(desc);
-        }
-
-        const foot = document.createElement('div');
-        foot.className = 'kb-card-foot';
-        const date = document.createElement('span');
-        date.className = 'kb-date';
-        date.innerHTML = SVG_CAL;
-        date.append(document.createTextNode(' ' + fmtDate(tarefa.created_at)));
-        foot.append(date);
-        card.append(foot);
-
-        return card;
-    }
-
-    function listFor(status) {
-        return document.querySelector(`.kb-list[data-status="${status}"]`);
-    }
-
-    function placeCard(tarefa, removeId) {
-        if (removeId) {
-            const old = document.querySelector(`.kb-card[data-id="${removeId}"]`);
-            if (old) old.remove();
-        }
-        const list = listFor(tarefa.status);
-        if (!list) return;
-        const card = buildCard(tarefa);
-        list.insertBefore(card, list.querySelector('.kb-empty') || null);
-    }
-
-    function clearErrors() {
-        errorsBox.classList.add('hidden');
-        errorsList.innerHTML = '';
-    }
-    function showErrors(errors) {
-        errorsList.innerHTML = '';
-        Object.values(errors).forEach(msg => {
-            const li = document.createElement('li');
-            li.textContent = msg;
-            errorsList.append(li);
-        });
-        errorsBox.classList.remove('hidden');
-    }
-
-    function openModal(mode, card) {
-        clearErrors();
-        form.reset();
-        closeStatusDropdown();
-        form.dataset.mode = mode;
-
-        if (mode === 'edit' && card) {
-            form.dataset.id    = card.dataset.id;
-            titleInput.value   = card.dataset.title || '';
-            descInput.value    = card.dataset.description || '';
-            setStatus(card.closest('.kb-list').dataset.status);
-            modalTitle.innerHTML   = 'Editar <span class="text-brand-600">Tarefa</span>';
-            modalSubtitle.textContent = `Atualizando a tarefa #${card.dataset.id}.`;
-            submitLabel.textContent   = 'Atualizar Tarefa';
-        } else {
-            form.dataset.id    = '';
-            setStatus('pendente');
-            modalTitle.innerHTML   = 'Nova <span class="text-brand-600">Tarefa</span>';
-            modalSubtitle.textContent = 'Crie uma nova atividade para o projeto.';
-            submitLabel.textContent   = 'Salvar Tarefa';
-        }
-
-        modal.classList.add('open');
-        modal.setAttribute('aria-hidden', 'false');
-        setTimeout(() => titleInput.focus(), 60);
-    }
-
-    function closeModal() {
-        modal.classList.remove('open');
-        modal.setAttribute('aria-hidden', 'true');
-        closeStatusDropdown();
-        clearErrors();
-        form.reset();
-    }
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        clearErrors();
-
-        const isEdit = form.dataset.mode === 'edit';
-        const url    = isEdit ? `${UPDATE_BASE}/${form.dataset.id}` : STORE_URL;
-
-        const body = new URLSearchParams();
-        body.append('title', titleInput.value);
-        body.append('description', descInput.value);
-        body.append('status', statusSelect.value);
-        body.append(CSRF_NAME, CSRF_HASH);
-
-        submitBtn.disabled = true;
-        try {
-            const res  = await fetch(url, {
-                method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                body
+        function clearErrors() { errorsBox.classList.add('hidden'); errorsList.innerHTML = ''; }
+        function showErrors(errors) {
+            errorsList.innerHTML = '';
+            Object.values(errors).forEach(msg => {
+                const li = document.createElement('li');
+                li.textContent = msg;
+                errorsList.append(li);
             });
-            const data = await res.json();
-
-            if (data && data.csrf) CSRF_HASH = data.csrf;
-
-            if (res.status === 400 && data.errors) {
-                showErrors(data.errors);
-                return;
-            }
-            if (!res.ok || data.status !== 'success') {
-                throw new Error((data && data.message) || 'Falha ao salvar a tarefa.');
-            }
-
-            placeCard(data.tarefa, isEdit ? data.tarefa.id : null);
-            refreshColumns();
-            closeModal();
-            showToast(data.message || 'Tarefa salva com sucesso!');
-        } catch (err) {
-            showToast(err.message || 'Erro ao salvar a tarefa.', true);
-        } finally {
-            submitBtn.disabled = false;
+            errorsBox.classList.remove('hidden');
         }
-    });
+        function open() {
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden', 'false');
+            setTimeout(() => titleInput.focus(), 60);
+        }
+        function close() {
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+            status.close();
+            clearErrors();
+        }
 
-    document.getElementById('btn-nova-tarefa').addEventListener('click', () => openModal('create'));
+        modal.querySelectorAll('[data-modal-close]').forEach(el => el.addEventListener('click', close));
+
+        return { modal, form, titleInput, descInput, submitBtn, status, clearErrors, showErrors, open, close, isOpen: () => modal.classList.contains('open') };
+    }
+
+    const createCtl = createModalController('create');
+    const editCtl   = createModalController('edit');
+    let   editId    = null;
+
+    /* ---------------- Submit (AJAX) ---------------- */
+    function handleSubmit(ctl, getUrl, isEdit) {
+        ctl.form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            ctl.clearErrors();
+
+            const url  = getUrl();
+            const body = new URLSearchParams();
+            body.append('title', ctl.titleInput.value);
+            body.append('description', ctl.descInput.value);
+            body.append('status', ctl.status.getValue());
+            body.append(CSRF_NAME, CSRF_HASH);
+
+            ctl.submitBtn.disabled = true;
+            try {
+                const res  = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    body
+                });
+                const data = await res.json();
+
+                if (data && data.csrf) CSRF_HASH = data.csrf;
+
+                if (res.status === 400 && data.errors) {
+                    ctl.showErrors(data.errors);
+                    return;
+                }
+                if (!res.ok || data.status !== 'success') {
+                    throw new Error((data && data.message) || 'Falha ao salvar a tarefa.');
+                }
+
+                placeCard(data.task, isEdit ? data.task.id : null);
+                refreshColumns();
+                ctl.close();
+                showToast(data.message || 'Tarefa salva com sucesso!');
+            } catch (err) {
+                showToast(err.message || 'Erro ao salvar a tarefa.', true);
+            } finally {
+                ctl.submitBtn.disabled = false;
+            }
+        });
+    }
+
+    handleSubmit(createCtl, () => STORE_URL, false);
+    handleSubmit(editCtl, () => `${UPDATE_BASE}/${editId}`, true);
+
+    /* ---------------- Abrir modais ---------------- */
+    document.getElementById('btn-nova-tarefa').addEventListener('click', () => {
+        createCtl.form.reset();
+        createCtl.clearErrors();
+        createCtl.status.setStatus('pendente');
+        createCtl.open();
+    });
 
     document.addEventListener('click', (e) => {
         const editBtn = e.target.closest('.kb-action.edit');
         if (!editBtn) return;
         const card = editBtn.closest('.kb-card');
-        if (card) openModal('edit', card);
+        if (!card) return;
+
+        editCtl.form.reset();
+        editCtl.clearErrors();
+        editId = card.dataset.id;
+        editCtl.titleInput.value = card.dataset.title || '';
+        editCtl.descInput.value  = card.dataset.description || '';
+        editCtl.status.setStatus(card.closest('.kb-list').dataset.status);
+        document.getElementById('edit-modal-subtitle').textContent = `Atualizando a tarefa #${editId}.`;
+        editCtl.open();
     });
 
-    modal.querySelectorAll('[data-modal-close]').forEach(el =>
-        el.addEventListener('click', closeModal));
-
+    /* ---------------- ESC ---------------- */
     document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
-        if (statusWrap.dataset.open === 'true') { closeStatusDropdown(); return; }
-        if (modal.classList.contains('open')) closeModal();
+        if (createCtl.status.isOpen() || editCtl.status.isOpen()) {
+            createCtl.status.close();
+            editCtl.status.close();
+            return;
+        }
+        if (createCtl.isOpen()) createCtl.close();
+        if (editCtl.isOpen()) editCtl.close();
     });
 </script>
 

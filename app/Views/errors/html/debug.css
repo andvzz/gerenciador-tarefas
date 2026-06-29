@@ -11,7 +11,7 @@
 body {
     height: 100%;
     background: var(--main-bg-color);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter';
     color: var(--main-text-color);
     font-weight: 300;
     margin: 0;
@@ -80,7 +80,7 @@ p.lead {
     color: var(--light-text-color);
     padding: 0.5em 1em;
     border-radius: 5px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter';
     font-size: 0.85rem;
     margin: 0;
     overflow-x: scroll;

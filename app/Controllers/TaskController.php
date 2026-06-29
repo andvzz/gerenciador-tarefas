@@ -2,29 +2,29 @@
 
 namespace App\Controllers;
 
-use App\Models\TarefaModel;
+use App\Models\TaskModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 
-class TarefaController extends BaseController
+class TaskController extends BaseController
 {
-    protected TarefaModel $tarefaModel;
+    protected TaskModel $taskModel;
 
     public function __construct()
     {
-        $this->tarefaModel = new TarefaModel();
+        $this->taskModel = new TaskModel();
     }
 
     public function index()
     {
         $data = [
             'title'   => 'Minhas Tarefas',
-            'tarefas' => $this->tarefaModel->orderBy('created_at', 'DESC')->findAll(),
+            'tarefas' => $this->taskModel->orderBy('created_at', 'DESC')->findAll(),
         ];
 
-        return view('tarefas/index', $data);
+        return view('tasks/index', $data);
     }
 
-    public function salvar()
+    public function store()
     {
         $data = [
             'title'       => $this->request->getPost('title'),
@@ -32,29 +32,29 @@ class TarefaController extends BaseController
             'status'      => $this->request->getPost('status'),
         ];
 
-        if (! $this->tarefaModel->save($data)) {
-            return $this->responderErro($this->tarefaModel->errors());
+        if (! $this->taskModel->save($data)) {
+            return $this->respondError($this->taskModel->errors());
         }
 
-        $tarefa = $this->tarefaModel->find($this->tarefaModel->getInsertID());
+        $task = $this->taskModel->find($this->taskModel->getInsertID());
 
         if ($this->request->isAJAX()) {
             return $this->response->setJSON([
                 'status'  => 'success',
                 'message' => 'Tarefa criada com sucesso!',
-                'tarefa'  => $tarefa,
+                'task'    => $task,
                 'csrf'    => csrf_hash(),
             ]);
         }
 
-        return redirect()->to('/tarefas')->with('message', 'Tarefa criada com sucesso!');
+        return redirect()->to('/tasks')->with('message', 'Tarefa criada com sucesso!');
     }
 
-    public function atualizar($id = null)
+    public function update($id = null)
     {
-        $tarefa = $this->tarefaModel->find($id);
+        $task = $this->taskModel->find($id);
 
-        if ($tarefa === null) {
+        if ($task === null) {
             if ($this->request->isAJAX()) {
                 return $this->response->setStatusCode(404)
                     ->setJSON(['status' => 'error', 'message' => 'Tarefa não encontrada.', 'csrf' => csrf_hash()]);
@@ -69,23 +69,23 @@ class TarefaController extends BaseController
             'status'      => $this->request->getPost('status'),
         ];
 
-        if (! $this->tarefaModel->update($id, $data)) {
-            return $this->responderErro($this->tarefaModel->errors());
+        if (! $this->taskModel->update($id, $data)) {
+            return $this->respondError($this->taskModel->errors());
         }
 
         if ($this->request->isAJAX()) {
             return $this->response->setJSON([
                 'status'  => 'success',
                 'message' => 'Tarefa atualizada com sucesso!',
-                'tarefa'  => $this->tarefaModel->find($id),
+                'task'    => $this->taskModel->find($id),
                 'csrf'    => csrf_hash(),
             ]);
         }
 
-        return redirect()->to('/tarefas')->with('message', 'Tarefa atualizada com sucesso!');
+        return redirect()->to('/tasks')->with('message', 'Tarefa atualizada com sucesso!');
     }
 
-    private function responderErro(array $errors)
+    private function respondError(array $errors)
     {
         if ($this->request->isAJAX()) {
             return $this->response->setStatusCode(400)->setJSON([
@@ -100,20 +100,20 @@ class TarefaController extends BaseController
             ->with('errors', $errors);
     }
 
-    public function excluir($id = null)
+    public function delete($id = null)
     {
-        $tarefa = $this->tarefaModel->find($id);
+        $task = $this->taskModel->find($id);
 
-        if ($tarefa === null) {
+        if ($task === null) {
             throw PageNotFoundException::forPageNotFound('Tarefa não encontrada.');
         }
 
-        $this->tarefaModel->delete($id);
+        $this->taskModel->delete($id);
 
-        return redirect()->to('/tarefas')->with('message', 'Tarefa excluída com sucesso!');
+        return redirect()->to('/tasks')->with('message', 'Tarefa excluída com sucesso!');
     }
 
-    public function atualizarStatus()
+    public function updateStatus()
     {
         if (! $this->request->isAJAX()) {
             return $this->response->setStatusCode(403)
@@ -129,12 +129,12 @@ class TarefaController extends BaseController
                 ->setJSON(['error' => 'Dados inválidos.', 'csrf' => csrf_hash()]);
         }
 
-        if ($this->tarefaModel->find($id) === null) {
+        if ($this->taskModel->find($id) === null) {
             return $this->response->setStatusCode(404)
                 ->setJSON(['error' => 'Tarefa não encontrada.', 'csrf' => csrf_hash()]);
         }
 
-        $salvo = $this->tarefaModel->update($id, ['status' => $status]);
+        $salvo = $this->taskModel->update($id, ['status' => $status]);
 
         return $this->response->setJSON([
             'success' => (bool) $salvo,

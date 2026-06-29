@@ -2,12 +2,12 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\TarefaModel;
+use App\Models\TaskModel;
 use CodeIgniter\RESTful\ResourceController;
 
-class TarefaApiController extends ResourceController
+class TaskApiController extends ResourceController
 {
-    protected $modelName = TarefaModel::class;
+    protected $modelName = TaskModel::class;
     protected $format    = 'json';
 
     public function index()
@@ -17,13 +17,13 @@ class TarefaApiController extends ResourceController
 
     public function show($id = null)
     {
-        $tarefa = $this->model->find($id);
+        $task = $this->model->find($id);
 
-        if ($tarefa === null) {
+        if ($task === null) {
             return $this->failNotFound("Tarefa não encontrada com o ID {$id}.");
         }
 
-        return $this->respond($tarefa);
+        return $this->respond($task);
     }
 
     public function create()
@@ -41,9 +41,9 @@ class TarefaApiController extends ResourceController
 
     public function update($id = null)
     {
-        $tarefa = $this->model->find($id);
+        $task = $this->model->find($id);
 
-        if ($tarefa === null) {
+        if ($task === null) {
             return $this->failNotFound("Tarefa não encontrada com o ID {$id}.");
         }
 
@@ -58,9 +58,9 @@ class TarefaApiController extends ResourceController
 
     public function delete($id = null)
     {
-        $tarefa = $this->model->find($id);
+        $task = $this->model->find($id);
 
-        if ($tarefa === null) {
+        if ($task === null) {
             return $this->failNotFound("Tarefa não encontrada com o ID {$id}.");
         }
 

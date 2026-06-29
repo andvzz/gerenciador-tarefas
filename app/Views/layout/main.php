@@ -18,7 +18,7 @@
 
     <nav class="sticky top-0 z-50 glass border-b border-brand-600/10">
         <div class="max-w-[1400px] mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
-            <a href="<?= site_url('tarefas') ?>" class="flex items-center gap-3 md:gap-4 group">
+            <a href="<?= site_url('tasks') ?>" class="flex items-center gap-3 md:gap-4 group">
                 <img src="<?= base_url('assets/images/madalozzo_logo.5a60b2e7.svg') ?>" alt="Madalozzo"
                      class="h-7 md:h-8 w-auto group-hover:scale-105 transition-transform">
                 <span class="hidden sm:block h-7 w-px bg-brand-600/15"></span>

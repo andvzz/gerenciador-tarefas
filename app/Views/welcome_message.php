@@ -23,7 +23,7 @@
         }
         html, body {
             color: rgba(33, 37, 41, 1);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter';
             font-size: 16px;
             margin: 0;
             padding: 0;

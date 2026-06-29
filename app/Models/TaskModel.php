@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class TarefaModel extends Model
+class TaskModel extends Model
 {
     protected $table            = 'tasks';
     protected $primaryKey       = 'id';

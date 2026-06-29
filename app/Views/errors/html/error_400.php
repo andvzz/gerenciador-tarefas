@@ -22,7 +22,7 @@
         body {
             height: 100%;
             background: #fafafa;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter';
             color: #777;
             font-weight: 300;
         }
