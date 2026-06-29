@@ -149,5 +149,13 @@ Caso a pasta `vendor/` seja removida e você tenha o Composer instalado:
 composer install
 ```
 
-## O que reaprendi com php
+## O que reaprendi em PHP
+
+1. Revisão de API REST: 
+    - Utilizada para o envio dos pacotes JSON para o banco de dados, fazendo com que o backend e o frontend se comuniquem apenas com os dados necessários e não carrega desnecessariamente um html inteiro.
+2. Reaprendi a utilizar os métodos GET, POST, PUT e DELETE
+    - GET: Utilizado para buscar as informações existentes no servidor para devolver as tarefas em um pacote JSON para mostrar os cards na tela
+    - POST: Utilizado para o envio de novas tarefas para salvar no servidor, enviado através de um pacote JSON para ser criada uma nova linha no banco de dados
+    - PUT: Utilizado para atualizar as informações no servidor. Por exemplo: quando um card já criado é arrastado para alterar o status, ou que qualquer informação sobre o card seja alterada, o php vai procurar a nova tarefa e atualizar somente ela no banco de dados.
+    - DELETE: Utilizado para excluir as informações no servidor
 
