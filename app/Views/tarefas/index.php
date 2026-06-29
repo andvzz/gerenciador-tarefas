@@ -115,10 +115,14 @@ foreach ($tarefas as $tarefa) {
     .kb-modal-panel {
         position: relative; width: 100%; max-width: 560px;
         background: #FFFFFF; border: 1px solid rgba(0, 0, 255, 0.12);
-        border-radius: 28px; padding: 28px 28px 26px;
+        border-radius: 28px;
         box-shadow: 0 40px 80px -24px rgba(11, 42, 74, 0.55);
         transform: translateY(16px) scale(.97); opacity: 0;
         transition: transform .25s ease, opacity .25s ease;
+        max-height: 92vh; overflow: hidden;
+    }
+    .kb-modal-body {
+        padding: 28px 28px 26px;
         max-height: 92vh; overflow-y: auto;
     }
     .kb-modal.open .kb-modal-panel { transform: translateY(0) scale(1); opacity: 1; }
@@ -238,6 +242,7 @@ foreach ($tarefas as $tarefa) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
 
+        <div class="kb-modal-body">
         <div class="space-y-1 mb-7 pr-10">
             <h2 id="task-modal-title" class="text-2xl md:text-3xl font-black tracking-tighter uppercase text-ink">
                 Nova <span class="text-brand-600">Tarefa</span>
@@ -316,6 +321,7 @@ foreach ($tarefas as $tarefa) {
                 </button>
             </div>
         </form>
+        </div>
     </div>
 </div>
 
