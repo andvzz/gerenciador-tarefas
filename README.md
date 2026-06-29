@@ -1,23 +1,3 @@
-## Funcionalidades
-
-- CRUD completo (Criar, Listar, Editar, Excluir) com rotas amigáveis
-- Validação de dados nativa do CodeIgniter no Model
-- Proteção CSRF habilitada globalmente
-- Proteção contra SQL Injection (Query Builder / Active Record do CI4)
-- Quadro Kanban responsivo (Tailwind CSS) com drag & drop entre status
-- API REST (`/api/tarefas`) retornando JSON
-
----
-
-## Requisitos
-
-- PHP **8.2** ou superior
-- Extensões: `intl`, `mbstring`, `mysqli` (ou `pdo_mysql`)
-- MySQL / MariaDB
-- (Opcional) Composer — **o framework já está instalado** na pasta `vendor/`, então não é obrigatório.
-
----
-
 ## 1. Configuração do Banco de Dados
 
 1. Abra o seu cliente MySQL (phpMyAdmin, DBeaver, linha de comando, etc.).
@@ -161,44 +141,6 @@ curl -X PUT http://localhost:8080/api/tarefas/1 \
 curl -X DELETE http://localhost:8080/api/tarefas/1
 ```
 
----
-
-## Estrutura dos Arquivos Principais
-
-```
-gerenciador-tarefas/
-├── database.sql                              # Script do banco de dados
-├── .env                                      # Configurações de ambiente
-├── app/
-│   ├── Config/
-│   │   ├── Routes.php                         # Rotas web + grupo /api
-│   │   └── Filters.php                        # CSRF global (exceto api/*)
-│   ├── Models/
-│   │   └── TarefaModel.php                    # Active Record + validação
-│   ├── Controllers/
-│   │   ├── TarefaController.php               # CRUD web
-│   │   └── Api/
-│   │       └── TarefaApiController.php        # API REST (ResourceController)
-│   └── Views/
-│       ├── layout/main.php                    # Layout base
-│       └── tarefas/
-│           └── index.php                      # Quadro Kanban (CRUD via modal/AJAX)
-└── public/                                    # Document root (index.php)
-```
-
----
-
-## Segurança
-
-- **CSRF:** habilitado em `app/Config/Filters.php` (`$globals['before']`), aplicado a
-  todas as requisições web. Os formulários incluem `<?= csrf_field() ?>`.
-- **SQL Injection:** todas as operações usam o Query Builder / Model do CI4, que
-  faz o bind/escape dos parâmetros automaticamente.
-- **Mass Assignment:** o Model restringe os campos graváveis via `$allowedFields`.
-- **XSS:** as views aplicam `esc()` em todas as saídas dinâmicas.
-
----
-
 ## Reinstalando dependências (opcional)
 
 Caso a pasta `vendor/` seja removida e você tenha o Composer instalado:
@@ -206,3 +148,6 @@ Caso a pasta `vendor/` seja removida e você tenha o Composer instalado:
 ```bash
 composer install
 ```
+
+## O que reaprendi com php
+
