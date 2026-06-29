@@ -176,16 +176,7 @@ foreach ($tarefas as $tarefa) {
     .kb-select-option[aria-selected="true"] .kb-select-check { opacity: 1; }
 </style>
 
-<div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-    <div class="space-y-2">
-        <h1 class="text-4xl md:text-5xl font-black tracking-tighter leading-none uppercase text-ink">
-            Quadro de <span class="text-brand-600">Tarefas</span>
-        </h1>
-        <p class="text-sm font-medium text-brand-900/50">
-            Arraste os cards entre as colunas para atualizar o status.
-        </p>
-    </div>
-
+<div class="flex flex-col md:flex-row md:items-end md:justify-start gap-6 mb-10">
     <button type="button" id="btn-nova-tarefa"
        class="group inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-brand-600 text-white font-black uppercase text-xs tracking-[0.2em] rounded-2xl shadow-xl shadow-brand-600/30 hover:bg-brand-700 hover:-translate-y-0.5 active:scale-95 transition-all">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:rotate-90 transition-transform duration-300"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>

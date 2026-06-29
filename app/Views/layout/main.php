@@ -22,7 +22,7 @@
                 <img src="<?= base_url('assets/images/madalozzo_logo.5a60b2e7.svg') ?>" alt="Madalozzo"
                      class="h-7 md:h-8 w-auto group-hover:scale-105 transition-transform">
                 <span class="hidden sm:block h-7 w-px bg-brand-600/15"></span>
-                <span class="hidden sm:block text-sm md:text-base font-black tracking-tight text-ink uppercase">Gerenciador de Tarefas</span>
+                <span class="hidden sm:block text-sm md:text-base font-black tracking-tight text-ink uppercase">MadaTask</span>
             </a>
         </div>
     </nav>
@@ -40,7 +40,6 @@
 
     <footer class="max-w-[1400px] mx-auto px-4 md:px-8 py-10 text-center">
         <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-brand-700/50">
-            Gerenciador de Tarefas
         </p>
     </footer>
 
